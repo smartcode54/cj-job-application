@@ -68,3 +68,59 @@ document.addEventListener('DOMContentLoaded', () => {
                 noRadio.addEventListener('change', toggleDetails);
                 toggleDetails();
             });
+            // === MODIFIED: Form submission handling with reCAPTCHA v3 validation ===
+            const form = document.getElementById('application-form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault(); // Stop submission to get reCAPTCHA token first
+
+                // Check if other required fields are filled, browser will handle this visually
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                
+                grecaptcha.ready(function() {
+                  // หมายเหตุ: คุณต้องเปลี่ยน YOUR_RECAPTCHA_V3_SITE_KEY เป็น Site Key ของคุณเอง
+                  grecaptcha.execute('YOUR_RECAPTCHA_V3_SITE_KEY', {action: 'submit'}).then(function(token) {
+                      // ในสถานการณ์จริง: คุณจะส่ง 'token' นี้ไปที่ Backend ของคุณเพื่อตรวจสอบ
+                      // console.log(token);
+
+                      // สำหรับตัวอย่างนี้ เราจะจำลองว่าการตรวจสอบสำเร็จและดำเนินการต่อ
+                      
+                      // Show a temporary success message
+                      const successMessage = document.createElement('div');
+                      successMessage.textContent = 'ส่งใบสมัครเรียบร้อยแล้ว!';
+                      successMessage.className = 'mt-6 text-center text-lg font-semibold text-green-600 bg-green-100 p-4 rounded-lg';
+                      form.appendChild(successMessage);
+                      
+                      // Reset form after 3 seconds
+                      setTimeout(() => {
+                          successMessage.remove();
+                          form.reset();
+                          branchSelect.clear();
+                          // ไม่จำเป็นต้องรีเซ็ต reCAPTCHA v3 ด้วยตนเอง
+                      }, 3000);
+                  });
+                });
+            });
+
+            
+            // ซ่อนปุ่มส่งใบสมัครและ reCAPTCHA จนกว่าจะติ๊กยอมรับ PDPA
+            document.addEventListener('DOMContentLoaded', function() {
+                const pdpaCheckbox = document.getElementById('pdpa-consent');
+                const submitBtn = document.getElementById('submit-btn');
+                const recaptchaSection = document.getElementById('recaptcha-section');
+                function togglePDPA() {
+                    if (pdpaCheckbox.checked) {
+                        submitBtn.style.display = '';
+                        recaptchaSection.style.display = '';
+                    } else {
+                        submitBtn.style.display = 'none';
+                        recaptchaSection.style.display = 'none';
+                    }
+                }
+                pdpaCheckbox.addEventListener('change', togglePDPA);
+                // ซ่อนตอนโหลดหน้า
+                togglePDPA();
+            });
+        

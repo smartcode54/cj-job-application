@@ -17,10 +17,17 @@
     <!-- Tom Select CSS for searchable dropdown -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 
+    <!-- === Google reCAPTCHA v3 Script === -->
+    <!-- หมายเหตุ: คุณต้องเปลี่ยน YOUR_RECAPTCHA_V3_SITE_KEY เป็น Site Key ของคุณเอง -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcBDssrAAAAAFxerglR9DQ8C03sy0DND3INoVEx"></script>
     <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Kanit', sans-serif;
+        }
+        /* กรณี Tailwind accent ไม่รองรับทุกเบราว์เซอร์ */
+        input[type="radio"], input[type="checkbox"] {
+            accent-color: #3e8821;
         }
     </style>
 </head>
@@ -69,8 +76,9 @@
                         <label for="female">หญิง</label>
                     </div>
                     <div>
-                        <label for="education" class="block text-sm font-medium text-gray-700 mb-1">วุฒิการศึกษาสูงสุด</label>
-                         <select id="position" name="position" required placeholder="-- กรุณาเลือกตำแหน่ง --"
+                        <label for="education"
+                            class="block text-sm font-medium text-gray-700 mb-1">วุฒิการศึกษาสูงสุด</label>
+                        <select id="position" name="position" required placeholder="-- กรุณาเลือกตำแหน่ง --"
                             class="w-full px-4 py-2 border border-[#3e8821] rounded-lg focus:ring-[#3e8821] focus:border-[#3e8821] transition duration-150">
                             <option value="" disabled selected>-- กรุณาเลือกตำแหน่ง --</option>
                             <option value="Grade6">ป.6</option>
@@ -79,7 +87,7 @@
                             <option value="vocational">ปวช.</option>
                             <option value="High-vocational">ปวส.</option>
                             <option value="Bachelor">ปริญญาตรี</option>
-                        </select>  
+                        </select>
                     </div>
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">เบอร์โทรศัพท์</label>
@@ -92,14 +100,13 @@
                         <input type="text" name="lineid" id="lineid" placeholder="example_lineid"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
                     </div>
-
                 </div>
             </div>
 
             <!-- Job Application Section -->
             <div>
                 <h2 class="text-xl font-semibold text-gray-700 border-b pb-2 mb-4">ข้อมูลการสมัคร</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-6">
                     <div>
                         <label for="position"
                             class="block text-sm font-medium text-gray-700 mb-1">ตำแหน่งที่ต้องการสมัคร</label>
@@ -111,49 +118,100 @@
                         </select>
                     </div>
                     <div>
-                        <label for="nearBranch" class="block text-sm font-medium text-gray-700 mb-1">หากสาขาที่เลือกเต็ม แต่มีสาขาอื่นใกล้เคียง ผู้สมัครสนใจหรือไม่?</label>
+                        <label for="nearBranch" class="block text-sm font-medium text-gray-700 mb-1">หากสาขาที่เลือกเต็ม
+                            แต่มีสาขาอื่นใกล้เคียง ผู้สมัครสนใจหรือไม่?</label>
                         <input type="radio" value="yes" name="nearBranch" id="yes" required>
-                        <label for="yes">สนใจ</label> <br/>
-                        <input type="radio" value="no" name="nearBranch" id="no" required>
+                        <label for="yes">สนใจ</label> <br />
+                        <input type="radio" value="no" name="nearBranch" id="no" required class="accent-[#3e8821]">
                         <label for="no">ไม่สนใจ</label>
                     </div>
                     <div>
-                        <label for="garuner" class="block text-sm font-medium text-gray-700 mb-1">ผู้สมัครมีบุคคลค้ำประกันหรือไม่? (บิดา, มารดา, คู่สมรส หรือ ญาติพี่น้องนามสกุลเดียวกันที่อายุมากกว่า 20 ปี)</label>
+                        <label for="garuner"
+                            class="block text-sm font-medium text-gray-700 mb-1">ผู้สมัครมีบุคคลค้ำประกันหรือไม่? (บิดา,
+                            มารดา, คู่สมรส หรือ ญาติพี่น้องนามสกุลเดียวกันที่อายุมากกว่า 20 ปี)</label>
                         <input type="radio" value="yes" name="garuner" id="yes" required>
-                        <label for="yes">มีบุคคลค้ำประกัน</label> <br/>
-                        <input type="radio" value="no" name="garuner" id="no" required>
+                        <label for="yes">มีบุคคลค้ำประกัน</label> <br />
+                        <input type="radio" value="no" name="garuner" id="no" required class="accent-[#3e8821]">
                         <label for="no">ไม่มีบุคคลค้ำประกัน</label>
                     </div>
                     <div>
-                        <label for="criminal-History" class="block text-sm font-medium text-gray-700 mb-1">ผู้สมัครเคยถูกดำเนินคดีอาญาหรือไม่?</label>
-                        <input type="radio" value="yes" name="criminal-History" id="criminal-yes" required>
-                        <label for="criminal-yes">เคย</label> <br/>
-                        <input type="radio" value="no" name="criminal-History" id="criminal-no" required>
+                        <label for="criminal-history"
+                            class="block text-sm font-medium text-gray-700 mb-1">ผู้สมัครเคยถูกดำเนินคดีอาญาหรือไม่?</label>
+                        <input type="radio" value="yes" name="criminal-history" id="criminal-yes" required>
+                        <label for="criminal-yes">เคย</label> <br />
+                        <input type="radio" value="no" name="criminal-history" id="criminal-no" required class="accent-[#3e8821]">
                         <label for="criminal-no">ไม่เคย</label>
                     </div>
                     <!-- Container for criminal details, hidden by default -->
                     <div id="criminal-details-container" class="hidden md:col-span-2">
-                        <label for="criminal-details" class="block text-sm font-medium text-gray-700 mb-1">โปรดระบุรายละเอียดข้อหา</label>
+                        <label for="criminal-details"
+                            class="block text-sm font-medium text-gray-700 mb-1">โปรดระบุรายละเอียดข้อหา</label>
                         <input type="text" name="criminal-details" id="criminal-details" placeholder="ระบุรายละเอียด"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
                     </div>
+                    <div>
+                        <label for="start-working-date"
+                            class="block text-sm font-medium text-gray-700 mb-1">วันที่สามารถเริ่มงานได้เร็วที่สุด</label>
+                        <input type="date" id="start-working-date" name="start-working-date" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                    </div>
+                    <!-- === ADDED SECTION: PDPA Consent === -->
+                    <div class="mt-8 pt-6 border-t">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4">นโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</h2>
+                        <a href="https://www.cjexpress.co.th/upload/CJ-Policy.pdf" target="_blank" class="text-blue-600 underline text-sm mb-2 inline-block">อ่านนโยบายฉบับเต็ม</a>
+                        <div
+                            class="h-40 overflow-y-auto bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-600 space-y-3">
+                            <p>ข้าพเจ้าให้ความยินยอมแก่บริษัท ซี.เจ. เอ็กซ์เพรส กรุ๊ป จำกัด และบริษัทย่อย (“บริษัทฯ”)
+                                และบริษัทในกลุ่ม ในการเก็บรวบรวม ใช้
+                                และ/หรือเปิดเผยข้อมูลส่วนบุคคลที่ละเอียดอ่อนของข้าพเจ้า
+                                เพื่อวัตถุประสงค์ที่กำหนดไว้ดังนี้:</p>
+                            <p><strong>ข้อมูลสุขภาพ:</strong> เพื่อพิจารณาคัดกรองประวัติในการรับสมัครงาน,
+                                เพื่อการตรวจสุขภาพ, เพื่อการเก็บบันทึกการลา, เพื่อประเมินความสามารถ,
+                                เพื่อการพิจารณามอบหมายงาน และ/หรือแต่งตั้งให้ดำรงตำแหน่งในบริษัทฯ ตามความเหมาะสม
+                                รวมทั้งเพื่อวัตถุประสงค์เกี่ยวกับการประกันภัย</p>
+                            <p><strong>ประวัติอาชญากรรมและประวัติการกระทำความผิด:</strong>
+                                เพื่อพิจารณาคัดกรองประวัติในการรับสมัครงาน รวมทั้งติดต่อสอบถาม
+                                หรือเก็บรวบรวมข้อมูลส่วนบุคคลของข้าพเจ้าจากแหล่งอื่น
+                                รวมถึงบุคคลอื่นใดที่ข้าพเจ้าจัดหาให้ และ/หรือ หน่วยงานของรัฐ</p>
+                            <p><strong>ข้อมูลชีวภาพ:</strong> เพื่อการบันทึกเวลาทำงาน</p>
+                            <p><strong>ข้อมูลศาสนา:</strong> เพื่อจัดสรรงานและสวัสดิการให้เหมาะสม</p>
+                        </div>
+                        <div class="mt-4 flex items-center">
+                            <input type="checkbox" id="pdpa-consent" name="pdpa-consent" required
+                                class="h-5 w-5 accent-[#3e8821] border-gray-300 rounded focus:ring-[#3e8821]">
+                            <label for="pdpa-consent"
+                                class="ml-2 block text-sm text-gray-900">ข้าพเจ้าได้อ่านและยอมรับข้อตกลงรวมถึงนโยบาย
+                                เงื่อนไขการให้ข้อมูลส่วนบุคคล</label>
+                        </div>
+                    </div>
+                    <!-- === END of ADDED SECTION === -->
                 </div>
             </div>
 
             <!-- Submit Button -->
             <div class="text-center pt-4">
-                <button type="submit"
+                <button id="submit-btn" type="submit"
                     class="w-full md:w-auto px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform transform hover:scale-105 duration-300">
                     ส่งใบสมัคร
                 </button>
             </div>
+            <p class="text-xs text-gray-400 text-center mt-4">
+                This site is protected by reCAPTCHA and the Google
+                <a href="https://policies.google.com/privacy" class="hover:underline">Privacy Policy</a> and
+                <a href="https://policies.google.com/terms" class="hover:underline">Terms of Service</a> apply.
+            </p>
         </form>
     </div>
 
     <!-- Tom Select JS -->
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
-    <!-- Embedded JavaScript -->
+
+        
         <script src="app.js"></script>
+
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
+
 </html>
