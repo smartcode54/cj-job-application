@@ -9,7 +9,7 @@ admin.initializeApp();
 
 // Initialize BigQuery client
 const bigquery = new BigQuery({
-  projectId: process.env.2, // ใช้ project ID จาก environment
+  projectId: "hq-innovation-dev", // ใช้ project ID จาก environment
 });
 
 // Function สำหรับดึงข้อมูลสาขาจาก BigQuery
@@ -18,23 +18,25 @@ exports.getBranches = onRequest({ cors: true }, async (req, res) => {
   cors(req, res, async () => {
     try {
       // กำหนดชื่อ dataset และ table ของคุณที่เก็บข้อมูลสาขา
-      const datasetId = "your_dataset_name"; // เปลี่ยนเป็นชื่อ dataset ของคุณ
-      const tableId = "branches"; // เปลี่ยนเป็นชื่อ table ของคุณ
+      const datasetId = "hq-innovation-dev.branchMasterdata"; // เปลี่ยนเป็นชื่อ dataset ของคุณ
+      const tableId = "branchMasterdata"; // เปลี่ยนเป็นชื่อ table ของคุณ
 
       // SQL Query สำหรับดึงข้อมูลสาขา
       const query = `
         SELECT 
-          branch_code as code,
-          branch_name as text,
-          branch_id as value,
-          province,
-          region,
-          status
+        branch_code,
+        branchname_th,
+        coordinates,
+        province,
+        region,
+        district,
+        branch_status
         FROM \`${datasetId}.${tableId}\`
-        WHERE status = 'active'
-        ORDER BY province, branch_name
+        WHERE branch_status IN ('เปิดทำการ', 'รอเปิดทำการ')  
+        LIMIT 10
       `;
 
+      //      ORDER BY province, branch_name
       logger.info("Executing BigQuery query:", query);
 
       // Execute query
@@ -45,12 +47,16 @@ exports.getBranches = onRequest({ cors: true }, async (req, res) => {
 
       // แปลงข้อมูลให้อยู่ในรูปแบบที่ต้องการ
       const branches = rows.map((row) => ({
-        value: row.value || row.code, // ใช้ branch_id หรือ branch_code เป็น value
-        text: row.text,
-        code: row.code,
+        code: row.branch_code, // ใช้ branch_id หรือ branch_code เป็น value
+        text: row.branchname_th,
+        coordinates: row.coordinates,
         province: row.province,
         region: row.region,
+        district: row.district,
+        branch_status: row.branch_status,
       }));
+
+      console.log("branches", branches);
 
       logger.info(`Found ${branches.length} branches`);
 
