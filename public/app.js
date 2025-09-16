@@ -47,3 +47,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 e.target.value = formattedInput;
             });
+
+            // แสดง/ซ่อน input รายละเอียดคดีอาญา
+            document.addEventListener('DOMContentLoaded', function() {
+                const yesRadio = document.getElementById('criminal-yes');
+                const noRadio = document.getElementById('criminal-no');
+                const detailsContainer = document.getElementById('criminal-details-container');
+                const detailsInput = document.getElementById('criminal-details');
+                function toggleDetails() {
+                    if (yesRadio.checked) {
+                        detailsContainer.classList.remove('hidden');
+                        detailsInput.required = true;
+                    } else {
+                        detailsContainer.classList.add('hidden');
+                        detailsInput.required = false;
+                        detailsInput.value = '';
+                    }
+                }
+                yesRadio.addEventListener('change', toggleDetails);
+                noRadio.addEventListener('change', toggleDetails);
+                toggleDetails();
+            });
