@@ -37,8 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            // เปิดหน้าใหม่สำหรับกรอกข้อมูลการสมัครงาน
-            window.location.href = 'applicationform.html';
+            // ส่งค่า branch และ code ไปยังหน้าใบสมัครผ่าน query string
+            const selectedValue = selectEl.value;
+            const selectedOption = branchOptions.find(opt => opt.value === selectedValue);
+            const code = selectedOption ? selectedOption.code : '';
+            const text = selectedOption ? selectedOption.text : '';
+            const params = new URLSearchParams({ branch: selectedValue || '', code, text });
+            window.location.href = `applicationform.html?${params.toString()}`;
         });
     }
 });

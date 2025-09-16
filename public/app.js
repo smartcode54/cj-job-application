@@ -1,5 +1,17 @@
 // Auto-formatting for the phone number input (id='telephone')
 document.addEventListener('DOMContentLoaded', () => {
+            // Read branch info from query params and display in disabled input
+            const params = new URLSearchParams(window.location.search);
+            const branchText = params.get('text');
+            const branchCode = params.get('code');
+            const selectedBranchNameInput = document.getElementById('selected-branch-name');
+            const selectedBranchCodeInput = document.getElementById('selected-branch-code');
+            if (selectedBranchNameInput) {
+                selectedBranchNameInput.value = branchText || '';
+            }
+            if (selectedBranchCodeInput) {
+                selectedBranchCodeInput.value = branchCode || '';
+            }
             // Auto-formatting for the phone number input
             // === FIXED LINE ===
             // เปลี่ยนจาก 'telephone' เป็น 'phone' ให้ตรงกับ ID ของ input
@@ -81,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 grecaptcha.ready(function() {
                   // หมายเหตุ: คุณต้องเปลี่ยน YOUR_RECAPTCHA_V3_SITE_KEY เป็น Site Key ของคุณเอง
-                  grecaptcha.execute('YOUR_RECAPTCHA_V3_SITE_KEY', {action: 'submit'}).then(function(token) {
+                  grecaptcha.execute('6LcBDssrAAAAAFxerglR9DQ8C03sy0DND3INoVEx', {action: 'submit'}).then(function(token) {
                       // ในสถานการณ์จริง: คุณจะส่ง 'token' นี้ไปที่ Backend ของคุณเพื่อตรวจสอบ
                       // console.log(token);
 
